@@ -11,7 +11,7 @@
         android:background="@drawable/rounded_rectangle_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="240dp"
+        android:maxWidth="280dp"
         android:padding="8dp"
         android:textColor="#ffffff"
         android:layout_marginRight="8dp"

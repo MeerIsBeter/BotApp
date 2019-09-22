@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'com.chaquo.python'
+
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
@@ -9,11 +11,22 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.chatbot"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+        python {
+            pip {
+                install "pandas"
+                install "scikit-learn"
+                install "spacy"
+                install "numpy"
+            }
+        }
     }
     buildTypes {
         release {
