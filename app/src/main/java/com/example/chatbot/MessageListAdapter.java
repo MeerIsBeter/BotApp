@@ -1,6 +1,7 @@
 package com.example.chatbot;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     // Determines the appropriate ViewType according to the sender of the message.
     @Override
     public int getItemViewType(int position) {
-        Message message = (Message) mMessageList.get(position);
+        Message message = mMessageList.get(position);
 
         if (message.getUser()) {
             // If the current user is the sender of the message
@@ -67,7 +68,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     // Passes the message object to a ViewHolder so that the contents can be bound to UI.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Message message = (Message) mMessageList.get(position);
+        Message message = mMessageList.get(position);
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
@@ -84,15 +85,16 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         SentMessageHolder(View itemView) {
             super(itemView);
 
-            messageText = (TextView) itemView.findViewById(R.id.text_message_body);
-            timeText = (TextView) itemView.findViewById(R.id.text_message_time);
+            messageText = itemView.findViewById(R.id.text_message_body);
+            timeText = itemView.findViewById(R.id.text_message_time);
         }
 
         void bind(Message message) {
             messageText.setText(message.getText());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(formatDateTime(itemView.getContext(), message.getTime(), 0));
+            timeText.setText(formatDateTime(itemView.getContext(), message.getTime(),
+                    DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
         }
     }
 
@@ -103,9 +105,9 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         ReceivedMessageHolder(View itemView) {
             super(itemView);
 
-            messageText = (TextView) itemView.findViewById(R.id.text_message_body);
-            timeText = (TextView) itemView.findViewById(R.id.text_message_time);
-            nameText = (TextView) itemView.findViewById(R.id.text_message_name);
+            messageText = itemView.findViewById(R.id.text_message_body);
+            timeText = itemView.findViewById(R.id.text_message_time);
+            nameText = itemView.findViewById(R.id.text_message_name);
 //            profileImage = (ImageView) itemView.findViewById(R.id.image_message_profile);
         }
 
@@ -113,7 +115,8 @@ public class MessageListAdapter extends RecyclerView.Adapter {
             messageText.setText(message.getText());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(formatDateTime(itemView.getContext(), message.getTime(), 0));
+            timeText.setText(formatDateTime(itemView.getContext(), message.getTime(),
+                    DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
 
             nameText.setText("BOT");
 

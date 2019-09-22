@@ -8,6 +8,9 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import android.R.attr.start
+import kotlin.concurrent.thread
+
 
 class MessageListActivity : AppCompatActivity() {
 
@@ -18,8 +21,8 @@ class MessageListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_message_list)
 
 
-        val message1 = Message("Hi there hdffd", true, System.currentTimeMillis())
-        val message2 = Message("I AM BOT", false, System.currentTimeMillis())
+//        val message1 = Message("Hi there hdffd", true, System.currentTimeMillis())
+//        val message2 = Message("I AM BOT", false, System.currentTimeMillis())
 
         val mMessageRecycler = findViewById<RecyclerView>(R.id.recyclerview_message_list)
         mMessageRecycler.layoutManager = LinearLayoutManager(this)
@@ -27,27 +30,49 @@ class MessageListActivity : AppCompatActivity() {
         mMessageRecycler.adapter = mMessageAdapter
 
 
+        fun updateData() {
+            mMessageAdapter.notifyDataSetChanged()
+        }
+
+
+        // handle sending and receiving messages
         val chatBox = findViewById<EditText>(R.id.edittext_chatbox)
         val sendButton = findViewById<Button>(R.id.button_chatbox_send)
         sendButton.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(view: View): Unit {
+            override fun onClick(view: View) {
                 // Handler code here.
                 val text = chatBox.text
                 if (text.toString().isNotEmpty()) {
+                    // send user message
                     val user = true
-                    val time = System.currentTimeMillis()
-                    val message = Message(text.toString(), user, time)
+                    val sendTime = System.currentTimeMillis()
+                    val message = Message(text.toString(), user, sendTime)
                     messageList.add(message)
                     mMessageAdapter.notifyDataSetChanged()
                     chatBox.text.clear()
+
+
+                    thread(start=true) {
+                        Thread.sleep(500)
+                        // send bot message
+                        val botText = "sample text"
+                        val isUser = false
+                        val responseTime = System.currentTimeMillis()
+                        val botMessage = Message(botText, isUser, responseTime)
+                        messageList.add(botMessage)
+                        runOnUiThread {
+                            updateData()
+                        }
+                    }
+
+                    mMessageAdapter.notifyDataSetChanged()
+
                 }
             }
         })
-
     }
 
-    fun updateData(newItems : List<Message>) {
-        messageList.clear()
-        messageList.addAll(newItems)
+    fun updateData() {
+
     }
 }
