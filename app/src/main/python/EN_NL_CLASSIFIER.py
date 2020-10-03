@@ -4,12 +4,14 @@ from sklearn.svm import SVC
 import random
 import spacy
 import numpy as np
+from os.path import dirname, join
 
 
 class Classifier:
 
     def __init__(self):
-        df = pd.read_csv("../res/EN_NL_DATA.csv")
+        filename = join(dirname(__file__), "res/EN_NL_DATA.csv")
+        df = pd.read_csv(filename)
 
         self.nlp = spacy.load('en_core_web_sm')
 
@@ -45,14 +47,3 @@ class Classifier:
         o = int(self.clf.predict(i)[0])
         # print("Message is \"{}\", corresponding label is {}".format(message, output))
         return o
-
-
-# input1 = "Wow, how's it going today my dear sir?"
-# input2 = "Wat doe je nou weer fucking mongool"
-# input3 = "I love a lot of things?"
-# input4 = "Hello."
-#
-# classify(input1)
-# classify(input2)
-# classify(input3)
-# classify(input4)

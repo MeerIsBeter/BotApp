@@ -36,7 +36,8 @@ def initialize():
     # Iterate over the keywords dictionary
     for intent, keys in keywords.items():
         # Create regular expressions and compile them into pattern objects
-        patterns[intent] = re.compile('|'.join(keys))
+        regexp = r'{}'.format('|'.join(map(lambda x: r'\b{}\b'.format(x), keys)))
+        patterns[intent] = re.compile(regexp)
 
 
 # Define match_rule()
@@ -74,7 +75,7 @@ def replace_pronouns(message):
         return re.sub('you', 'I', message)
     if 'i' in message:
         # Replace 'I' with 'you'
-        return re.sub(r'\bi\b', 'you', message)
+        return re.sub(r'\bI\b', 'you', message)
 
     return message
 
