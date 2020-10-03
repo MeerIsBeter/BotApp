@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.R.attr.start
 import kotlin.concurrent.thread
+import com.chaquo.python.PyObject
+import com.chaquo.python.Python
+
+
 
 
 class MessageListActivity : AppCompatActivity() {
@@ -29,6 +33,9 @@ class MessageListActivity : AppCompatActivity() {
         val mMessageAdapter = MessageListAdapter(this, messageList)
         mMessageRecycler.adapter = mMessageAdapter
 
+        val py = Python.getInstance()
+        val mod = py.getModule("test")
+
 
         fun updateData() {
             mMessageAdapter.notifyDataSetChanged()
@@ -41,21 +48,20 @@ class MessageListActivity : AppCompatActivity() {
         sendButton.setOnClickListener(object: View.OnClickListener {
             override fun onClick(view: View) {
                 // Handler code here.
-                val text = chatBox.text
-                if (text.toString().isNotEmpty()) {
+                val text = chatBox.text.toString()
+                if (text.isNotEmpty()) {
                     // send user message
                     val user = true
                     val sendTime = System.currentTimeMillis()
-                    val message = Message(text.toString(), user, sendTime)
+                    val message = Message(text, user, sendTime)
                     messageList.add(message)
                     mMessageAdapter.notifyDataSetChanged()
                     chatBox.text.clear()
 
-
                     thread(start=true) {
                         Thread.sleep(500)
                         // send bot message
-                        val botText = "sample text"
+                        val botText = mod.callAttr("main", text).toString()
                         val isUser = false
                         val responseTime = System.currentTimeMillis()
                         val botMessage = Message(botText, isUser, responseTime)
