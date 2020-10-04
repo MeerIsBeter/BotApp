@@ -24,8 +24,8 @@ keywords = {'goodbye': ['bye', 'farewell'],
 responses = {'default': 'default message',
              'goodbye': ['goodbye for now'],
              'noname_greet': ['Hello you! :)', 'Hi there', 'Hello!'],
-             'name_greet': ['Hello, {}!', 'Hi there'],
-             'thankyou': ['you are very welcome']}
+             'name_greet': ['Hello, {}!', 'Hi there {}'],
+             'thankyou': ['you are very welcome', 'np', "don't worry about it"]}
 
 # Define a dictionary of patterns
 patterns = {}
@@ -33,53 +33,54 @@ patterns = {}
 
 # initialize data
 def initialize():
-    # Iterate over the keywords dictionary
     for intent, keys in keywords.items():
         # Create regular expressions and compile them into pattern objects
         regexp = r'{}'.format('|'.join(map(lambda x: r'\b{}\b'.format(x), keys)))
         patterns[intent] = re.compile(regexp)
 
 
-# Define match_rule()
+# check the input for more complex rules
 def match_rule(i_rules, message):
     message = message.lower()
     response, phrase = "um...", None
 
-    # Iterate over the rules dictionary
     for pattern, responses in i_rules.items():
         # Create a match object
         match = re.search(pattern, message)
         if match is not None:
-            # Choose a random response
             response = random.choice(responses)
             if '{0}' in response:
                 phrase = match.group(1)
+            break
     # Return the response and phrase
     return response, phrase
 
 
-# Define replace_pronouns()
+# replace the pronouns in the input
 def replace_pronouns(message):
-    message = message.lower()
-    if 'me' in message:
-        # Replace 'me' with 'you'
-        return re.sub('me', 'you', message)
-    if 'my' in message:
-        # Replace 'my' with 'your'
-        return re.sub('my', 'your', message)
-    if 'your' in message:
-        # Replace 'your' with 'my'
-        return re.sub('your', 'my', message)
-    if 'you' in message:
-        # Replace 'you' with 'me'
-        return re.sub('you', 'I', message)
-    if 'i' in message:
-        # Replace 'I' with 'you'
-        return re.sub(r'\bI\b', 'you', message)
+    words = message.lower().split()
 
-    return message
+    for i in range(len(words)):
+        if words[i] == 'me':
+            # Replace 'me' with 'you'
+            words[i] = 'you'
+        elif words[i] == 'my':
+            # Replace 'my' with 'your'
+            words[i] = 'your'
+        elif words[i] == 'you':
+            # Replace 'you' with 'me'
+            words[i] = 'me'
+        elif words[i] == 'your':
+            # Replace 'your' with 'my'
+            words[i] = 'my'
+        elif words[i] == 'i':
+            # Replace 'I' with 'you'
+            words[i] = 'you'
+
+    return ' '.join(words)
 
 
+# check the input for a simple intent
 def match_intent(message):
     matched_intent = None
     for intent, pattern in patterns.items():
@@ -89,7 +90,7 @@ def match_intent(message):
     return matched_intent
 
 
-# Define find_name()
+# determine the presence of a name in the input
 def find_name(message):
     # exclude the first character from the input, as that character may be capitalized
     message = message[1:]
@@ -108,7 +109,7 @@ def find_name(message):
     return name
 
 
-# Define greet()
+# construct a greeting
 def greet(message):
     # Find the name
     name = find_name(message)
@@ -118,33 +119,30 @@ def greet(message):
         return random.choice(responses['name_greet']).format(name)
 
 
-# Define a respond function
+# construct the response
 def respond(message):
-    # store a copy of the message in all lowercase
     message_nocaps = message.lower()
-    # initialize the response variable
     response = None
 
-    # Call the match_intent function
+    # first scan the input for words that could signal a simple intent
     intent = match_intent(message_nocaps)
-    if not intent:
-        # Call match_rule
+
+    if intent:
+        if intent == 'greet':
+            response = greet(message)
+        else:
+            response = random.choice(responses[intent])
+    else:
+        # scan the input for more complex patterns
         response, phrase = match_rule(rules, message_nocaps)
+        # 'phrase' corresponds to a section of the input that could be repeated in the answer
         if phrase is not None:
             if phrase.endswith('?'):
                 phrase = phrase[:-1]
+        # if the selected response format contains a to-be-filled-in section, put the phrase there
         if '{0}' in response:
-            # Replace the pronouns in the phrase
             phrase = replace_pronouns(phrase)
-            # Include the phrase in the response
             response = response.format(phrase)
-
-    else:
-        key = intent
-        if key == 'greet':
-            response = greet(message)
-        else:
-            response = random.choice(responses[key])
 
     return response
 

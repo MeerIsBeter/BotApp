@@ -1,5 +1,5 @@
-import ELIZA_NL as NL
-import ELIZA as EN
+import NL
+import EN
 from EN_NL_CLASSIFIER import Classifier
 import time
 
