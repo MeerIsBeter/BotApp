@@ -10,8 +10,6 @@
     tools:context=".MessageListActivity">
 
 
-
-    <!-- A horizontal line between the chatbox and RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_message_list"
         android:layout_width="0dp"

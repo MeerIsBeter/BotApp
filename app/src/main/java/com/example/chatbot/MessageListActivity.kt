@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.R.attr.start
+import androidx.recyclerview.widget.DiffUtil
 import kotlin.concurrent.thread
 import com.chaquo.python.PyObject
 import com.chaquo.python.Python
@@ -24,10 +25,6 @@ class MessageListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message_list)
 
-
-//        val message1 = Message("Hi there hdffd", true, System.currentTimeMillis())
-//        val message2 = Message("I AM BOT", false, System.currentTimeMillis())
-
         val mMessageRecycler = findViewById<RecyclerView>(R.id.recyclerview_message_list)
         mMessageRecycler.layoutManager = LinearLayoutManager(this)
         val mMessageAdapter = MessageListAdapter(this, messageList)
@@ -36,11 +33,9 @@ class MessageListActivity : AppCompatActivity() {
         val py = Python.getInstance()
         val mod = py.getModule("test")
 
-
         fun updateData() {
-            mMessageAdapter.notifyDataSetChanged()
+            mMessageAdapter.notifyItemInserted(messageList.size-1)
         }
-
 
         // handle sending and receiving messages
         val chatBox = findViewById<EditText>(R.id.edittext_chatbox)
@@ -53,9 +48,9 @@ class MessageListActivity : AppCompatActivity() {
                     // send user message
                     val user = true
                     val sendTime = System.currentTimeMillis()
-                    val message = Message(text, user, sendTime)
+                    val message = Message(messageList.size-1, text, user, sendTime)
                     messageList.add(message)
-                    mMessageAdapter.notifyDataSetChanged()
+                    updateData()
                     chatBox.text.clear()
 
                     thread(start=true) {
@@ -64,7 +59,7 @@ class MessageListActivity : AppCompatActivity() {
                         val botText = mod.callAttr("main", text).toString()
                         val isUser = false
                         val responseTime = System.currentTimeMillis()
-                        val botMessage = Message(botText, isUser, responseTime)
+                        val botMessage = Message(messageList.size-1, botText, isUser, responseTime)
                         messageList.add(botMessage)
                         runOnUiThread {
                             updateData()
@@ -78,7 +73,22 @@ class MessageListActivity : AppCompatActivity() {
         })
     }
 
-    fun updateData() {
+    class DiffUtilCallback(
+        private val oldItems: List<Message>,
+        private val newItems: List<Message>
+    ) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldItems[oldItemPosition].id == newItems[newItemPosition].id
+        }
 
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            // It works properly if Item is a data class
+            // Otherwise, we should check if all fields of the items are the same
+            return oldItems[oldItemPosition] == newItems[newItemPosition]
+        }
+
+        override fun getOldListSize() = oldItems.size
+
+        override fun getNewListSize() = newItems.size
     }
 }

@@ -33,8 +33,9 @@ patterns = {}
 
 # initialize data
 def initialize():
+    # for each intent, create a regular expression for its corresponding keywords and
+    # compile the intent-regexp pairs in the 'patterns' dictionary
     for intent, keys in keywords.items():
-        # Create regular expressions and compile them into pattern objects
         regexp = r'{}'.format('|'.join(map(lambda x: r'\b{}\b'.format(x), keys)))
         patterns[intent] = re.compile(regexp)
 
