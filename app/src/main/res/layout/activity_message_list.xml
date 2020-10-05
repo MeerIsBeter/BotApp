@@ -41,7 +41,7 @@
 
         <EditText
             android:id="@+id/edittext_chatbox"
-            android:hint="Enter message"
+            android:hint="@string/chat_input_hint"
             android:background="@android:color/transparent"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
@@ -49,18 +49,20 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:maxLines="6"/>
+            android:maxLines="6"
+            android:inputType="textAutoCorrect" />
 
         <Button
             android:id="@+id/button_chatbox_send"
-            android:text="SEND"
-            android:textSize="14dp"
+            android:text="@string/send_button"
+            android:textSize="14sp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:gravity="center"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:focusable="true" />
 
     </LinearLayout>
 

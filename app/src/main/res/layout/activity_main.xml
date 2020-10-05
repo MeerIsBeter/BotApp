@@ -11,27 +11,41 @@
         android:id="@+id/bot_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:background="@drawable/circle_purple"
-        android:text="To Bot"
+        android:text="@string/bot_button"
+        android:textColor="#DFF4F3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/help_button"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.568"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.235"
-        android:layout_gravity="bottom|end" />
+        app:layout_constraintVertical_bias="0.636" />
 
     <Button
         android:id="@+id/help_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/circle_green"
-        android:text="Help"
+        android:text="@string/help_button"
+        android:textColor="#DFF4F3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.714"
+        app:layout_constraintHorizontal_bias="0.786"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.638" />
+        app:layout_constraintVertical_bias="0.813" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="381dp"
+        android:layout_height="225dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.136"
+        app:srcCompat="@drawable/logo_chitchat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

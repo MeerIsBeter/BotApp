@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Chatbot</string>
+    <string name="app_name">ChitChat</string>
+    <string name="bot_button">To Bot</string>
+    <string name="help_button">Help</string>
+    <string name="chat_input_hint">Enter message</string>
+    <string name="send_button">SEND</string>
+    <string name="received_sample_time">11:40</string>
+    <string name="received_sample_text">hi man, how are you?</string>
+    <string name="received_sample_name">John Doe</string>
+    <string name="sent_sample_time">11:40</string>
+    <string name="sent_sample_text">hello, hello!</string>
 </resources>
