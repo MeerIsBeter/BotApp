@@ -1,4 +1,4 @@
-package com.example.chatbot;
+package com.mdvmeijer.chitchat;
 
 class BubbleInterpolator implements android.view.animation.Interpolator {
     private double mAmplitude = 1;

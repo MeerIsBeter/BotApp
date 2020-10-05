@@ -1,4 +1,4 @@
-package com.example.chatbot;
+package com.mdvmeijer.chitchat;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -7,10 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.chatbot.Message;
 
 import java.util.List;
 

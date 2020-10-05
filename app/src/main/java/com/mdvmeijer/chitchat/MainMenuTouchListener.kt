@@ -1,4 +1,4 @@
-package com.example.chatbot
+package com.mdvmeijer.chitchat
 
 import android.view.MotionEvent
 import android.view.View

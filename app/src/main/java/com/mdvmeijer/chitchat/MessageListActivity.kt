@@ -1,19 +1,14 @@
-package com.example.chatbot
+package com.mdvmeijer.chitchat
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.R.attr.start
 import android.view.Menu
 import android.view.MenuItem
-import androidx.recyclerview.widget.DiffUtil
 import kotlin.concurrent.thread
-import com.chaquo.python.PyObject
 import com.chaquo.python.Python
 
 

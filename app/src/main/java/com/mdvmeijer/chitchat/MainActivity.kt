@@ -1,4 +1,4 @@
-package com.example.chatbot
+package com.mdvmeijer.chitchat
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.dynamicanimation.animation.SpringAnimation
-import androidx.dynamicanimation.animation.SpringForce
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import kotlin.concurrent.thread
