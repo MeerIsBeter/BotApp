@@ -6,18 +6,22 @@ import android.view.View.OnTouchListener
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.dynamicanimation.animation.DynamicAnimation
+import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
 
 
-class MainMenuTouchListener(function: () -> (Unit), var rootPosX: Float, var rootPosY: Float) : OnTouchListener {
+class MainMenuTouchListener(function: () -> (Unit), view: View) : OnTouchListener {
     var dX = 0f
     var dY: Float = 0f
     var lastAction: Int = -10
     val clickAction: () -> Unit = function
 
-    private var animationX: SpringAnimation? = null
-    private var animationY: SpringAnimation? = null
+    private val rootPosX = view.x
+    private val rootPosY = view.y
+
+    private var animationX: SpringAnimation = createSpringAnimation(view, rootPosX, DynamicAnimation.X)
+    private var animationY: SpringAnimation = createSpringAnimation(view, rootPosY, DynamicAnimation.Y)
 
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         when (event.action) {
@@ -26,10 +30,9 @@ class MainMenuTouchListener(function: () -> (Unit), var rootPosX: Float, var roo
                 dX = view.x - event.rawX
                 dY = view.y - event.rawY
                 lastAction = MotionEvent.ACTION_DOWN
-                if (animationX != null && animationY != null) {
-                    animationX!!.cancel()
-                    animationY!!.cancel()
-                }
+
+                animationX.cancel()
+                animationY.cancel()
             }
             MotionEvent.ACTION_MOVE -> { // the button is moved
                 view.y = event.rawY + dY
@@ -43,9 +46,8 @@ class MainMenuTouchListener(function: () -> (Unit), var rootPosX: Float, var roo
                 clickAction()
                 view.playSoundEffect(android.view.SoundEffectConstants.CLICK)
             } else { // bounce back to its original position
-                doSpringAnimation(view, rootPosX, rootPosY)
-                animationX!!.start()
-                animationY!!.start()
+                animationX.start()
+                animationY.start()
             }
             else -> return false
         }
@@ -62,21 +64,15 @@ class MainMenuTouchListener(function: () -> (Unit), var rootPosX: Float, var roo
         view.startAnimation(bubbleAnimation)
     }
 
-    private fun doSpringAnimation(view: View, x: Float, y: Float) {
-        animationX = SpringAnimation(view, DynamicAnimation.X)
+    private fun createSpringAnimation(view: View, pos: Float, direction: FloatPropertyCompat<View>): SpringAnimation {
+        val animation = SpringAnimation(view, direction)
 
-        val springX: SpringForce = SpringForce()
-        springX.finalPosition = x
-        springX.stiffness = SpringForce.STIFFNESS_MEDIUM
-        springX.dampingRatio = SpringForce.DAMPING_RATIO_HIGH_BOUNCY
-        animationX!!.spring = springX
+        val spring = SpringForce()
+        spring.finalPosition = pos
+        spring.stiffness = SpringForce.STIFFNESS_MEDIUM
+        spring.dampingRatio = SpringForce.DAMPING_RATIO_HIGH_BOUNCY
+        animation.spring = spring
 
-        animationY = SpringAnimation(view, DynamicAnimation.Y)
-
-        val springY: SpringForce = SpringForce()
-        springY.finalPosition = y
-        springY.stiffness = SpringForce.STIFFNESS_MEDIUM
-        springY.dampingRatio = SpringForce.DAMPING_RATIO_HIGH_BOUNCY
-        animationY!!.spring = springY
+        return animation
     }
 }

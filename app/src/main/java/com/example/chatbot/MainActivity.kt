@@ -37,11 +37,11 @@ class MainActivity : AppCompatActivity() {
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     startActivity(intent)
                 }
-            }, botButton.x, botButton.y))
+            }, botButton))
 
             helpButton.setOnTouchListener(MainMenuTouchListener ( {
                 println("Nothing yet!")
-            }, helpButton.x, helpButton.y))
+            }, helpButton))
         }
 
         botButton.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
