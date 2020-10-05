@@ -9,28 +9,29 @@
 
     <Button
         android:id="@+id/bot_button"
-        android:background="@drawable/circle_purple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/circle_purple"
         android:text="To Bot"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/help_button"
-        app:layout_constraintHorizontal_bias="0.621"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.222" />
+        app:layout_constraintVertical_bias="0.235"
+        android:layout_gravity="bottom|end" />
 
     <Button
         android:id="@+id/help_button"
-        android:background="@drawable/circle_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/circle_green"
         android:text="Help"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.653"
+        app:layout_constraintHorizontal_bias="0.714"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.598" />
+        app:layout_constraintVertical_bias="0.638" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
