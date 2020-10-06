@@ -1,5 +1,8 @@
 # BotApp
-Chatting application to serve as a medium for chatbot conversations
+Chatting application to serve as a medium for chatbot conversations.
 
+The chatbot logic is contained in a self-written Python module that is connected to the app by means of Chaquopy (https://chaquo.com/chaquopy/).
 
-![Screenshot](demo_1.jpeg)
+Home screen             |  Chat interface
+:-------------------------:|:-------------------------:
+![Screenshot](chitchat_screenshot_home.jpg)  |  ![Screenshot](chitchat_screenshot_chat.jpg)
