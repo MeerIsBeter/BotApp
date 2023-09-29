@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -17,11 +18,9 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
-    private Context mContext;
-    private List<Message> mMessageList;
+    private final List<Message> mMessageList;
 
     public MessageListAdapter(Context context, List<Message> messageList) {
-        mContext = context;
         mMessageList = messageList;
     }
 
@@ -45,8 +44,9 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     }
 
     // Inflates the appropriate layout according to the ViewType.
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
 
         if (viewType == VIEW_TYPE_MESSAGE_SENT) {
@@ -67,17 +67,16 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Message message = mMessageList.get(position);
 
-        switch (holder.getItemViewType()) {
-            case VIEW_TYPE_MESSAGE_SENT:
-                ((SentMessageHolder) holder).bind(message);
-                break;
-            case VIEW_TYPE_MESSAGE_RECEIVED:
-                ((ReceivedMessageHolder) holder).bind(message);
+        if (holder.getItemViewType() == VIEW_TYPE_MESSAGE_SENT) {
+            ((SentMessageHolder) holder).bind(message);
+        } else if (holder.getItemViewType() == VIEW_TYPE_MESSAGE_RECEIVED) {
+            ((ReceivedMessageHolder) holder).bind(message);
         }
     }
 
-    private class SentMessageHolder extends RecyclerView.ViewHolder {
-        TextView messageText, timeText;
+    private static class SentMessageHolder extends RecyclerView.ViewHolder {
+        TextView messageText;
+        TextView timeText;
 
         SentMessageHolder(View itemView) {
             super(itemView);
@@ -95,8 +94,10 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
-        TextView messageText, timeText, nameText;
+    private static class ReceivedMessageHolder extends RecyclerView.ViewHolder {
+        TextView messageText;
+        TextView timeText;
+        TextView nameText;
 //        ImageView profileImage;
 
         ReceivedMessageHolder(View itemView) {
